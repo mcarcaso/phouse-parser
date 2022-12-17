@@ -1,5 +1,6 @@
 import test from 'ava';
+import { anyChar, parse } from '..';
 
 test('parse stuff', (t) => {
-  t.is(2, 4);
+  t.is('h', parse(anyChar(), 'hello world')?.value());
 });

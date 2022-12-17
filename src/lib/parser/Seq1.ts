@@ -1,7 +1,7 @@
 import { PStream } from '../pstream/PStream';
 import { Parser, ParserContext } from './Parser';
 
-export class Seq implements Parser {
+export class Seq1 implements Parser {
   parsers: Parser[];
   index: number;
   constructor(parsers: Parser[], index: number) {

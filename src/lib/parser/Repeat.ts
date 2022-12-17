@@ -2,12 +2,12 @@ import { PStream } from '../pstream/PStream';
 import { Parser, ParserContext } from './Parser';
 import { ProxyParser } from './ProxyParser';
 
-type Args = { delim?: Parser; min?: number; max?: number };
+export type RepeatArgs = { delim?: Parser; min?: number; max?: number };
 export class Repeat extends ProxyParser {
   delim?: Parser;
   min: number;
   max: number;
-  constructor(delegate: Parser, args: Args) {
+  constructor(delegate: Parser, args: RepeatArgs) {
     super(delegate);
     this.delim = args.delim;
     this.max = args.max ?? Number.MAX_SAFE_INTEGER;
