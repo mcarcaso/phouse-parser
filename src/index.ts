@@ -66,3 +66,8 @@ export const parse = (p: ParserIsh, str: string, x?: ParserContext) => {
     new StringPStream({ pos: 0, str, value: null })
   );
 };
+
+export * from './lib/parser/Parser';
+export * from './lib/pstream/ProxyPStream';
+export * from './lib/pstream/PStream';
+export * from './lib/pstream/StringPStream';
