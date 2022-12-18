@@ -3,8 +3,11 @@ import { Parser, ParserContext } from './Parser';
 import { ProxyParser } from './ProxyParser';
 
 export class ParserWithAction extends ProxyParser {
-  action: (x: ParserContext, ps: PStream) => void;
-  constructor(delegate: Parser, action: () => void) {
+  action: (x: ParserContext, ps: PStream) => unknown;
+  constructor(
+    delegate: Parser,
+    action: (x: ParserContext, ps: PStream) => unknown
+  ) {
     super(delegate);
     this.action = action;
   }
