@@ -1,7 +1,7 @@
 import { Alt } from './lib/parser/Alt';
 import { AnyChar } from './lib/parser/AnyChar';
 import { Chars } from './lib/parser/Chars';
-import { Eof } from './lib/parser/EOF';
+import { Eof } from './lib/parser/EofT';
 import { Join } from './lib/parser/Join';
 import { Literal } from './lib/parser/Literal';
 import { LiteralIgnoreCase } from './lib/parser/LiteralIgnoreCase';
@@ -67,7 +67,29 @@ export const parse = (p: ParserIsh, str: string, x?: ParserContext) => {
   );
 };
 
+export * from './lib/parser/Alt';
+export * from './lib/parser/AnyChar';
+export * from './lib/parser/Chars';
+export * from './lib/parser/EofT';
+export * from './lib/parser/Join';
+export * from './lib/parser/Literal';
+export * from './lib/parser/LiteralIgnoreCase';
+export * from './lib/parser/Not';
+export * from './lib/parser/NotChars';
+export * from './lib/parser/Optional';
 export * from './lib/parser/Parser';
+export * from './lib/parser/ParserWithAction';
+export * from './lib/parser/ProxyParser';
+export * from './lib/parser/Range';
+export * from './lib/parser/Repeat';
+export * from './lib/parser/Repeat0';
+export * from './lib/parser/Seq';
+export * from './lib/parser/Seq0';
+export * from './lib/parser/Seq1';
+export * from './lib/parser/SeqN';
+export * from './lib/parser/Substring';
+export * from './lib/parser/Symbol';
+export * from './lib/parser/Until';
 export * from './lib/pstream/ProxyPStream';
 export * from './lib/pstream/PStream';
 export * from './lib/pstream/StringPStream';
