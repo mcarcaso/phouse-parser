@@ -1,7 +1,7 @@
 import { Alt } from './lib/parser/Alt';
 import { AnyChar } from './lib/parser/AnyChar';
 import { Chars } from './lib/parser/Chars';
-import { Eof } from './lib/parser/EofT';
+import { Eof } from './lib/parser/Eof';
 import { Join } from './lib/parser/Join';
 import { Literal } from './lib/parser/Literal';
 import { LiteralIgnoreCase } from './lib/parser/LiteralIgnoreCase';
@@ -70,7 +70,7 @@ export const parse = (p: ParserIsh, str: string, x?: ParserContext) => {
 export * from './lib/parser/Alt';
 export * from './lib/parser/AnyChar';
 export * from './lib/parser/Chars';
-export * from './lib/parser/EofT';
+export * from './lib/parser/Eof';
 export * from './lib/parser/Join';
 export * from './lib/parser/Literal';
 export * from './lib/parser/LiteralIgnoreCase';
