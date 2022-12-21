@@ -15,6 +15,7 @@ import { Repeat0, Repeat0Args } from './lib/parser/Repeat0';
 import { Seq } from './lib/parser/Seq';
 import { Seq0 } from './lib/parser/Seq0';
 import { Seq1 } from './lib/parser/Seq1';
+import { SeqN } from './lib/parser/SeqN';
 import { Substring } from './lib/parser/Substring';
 import { Symbol } from './lib/parser/Symbol';
 import { Until } from './lib/parser/Until';
@@ -25,6 +26,8 @@ const toParser = (p: ParserIsh) =>
   typeof p === 'string' ? new Literal({ str: p }) : p;
 
 export const seq = (parsers: ParserIsh[]) => new Seq(parsers.map(toParser));
+export const seqN = (indexes: number[], parsers: ParserIsh[]) =>
+  new SeqN(parsers.map(toParser), indexes);
 export const repeat0 = (delegate: ParserIsh, o: Repeat0Args) =>
   new Repeat0(toParser(delegate), o);
 export const alt = (parsers: ParserIsh[]) => new Alt(parsers.map(toParser));
