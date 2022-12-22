@@ -3,9 +3,7 @@ import {
   alt,
   anyChar,
   eof,
-  join,
   not,
-  parse,
   plus,
   range,
   repeat,
@@ -19,7 +17,7 @@ import { ParserWithAction } from './parser/ParserWithAction';
 import { PStream } from './pstream/PStream';
 import { StringPStream } from './pstream/StringPStream';
 
-const symbols = {
+const markdownSymbols = {
   eol: alt(['\n', eof()]),
 
   plain: not(sym('eol'), anyChar()),
@@ -104,11 +102,11 @@ const symbols = {
   START: repeat(alt([sym('block'), sym('line')])),
 };
 
-type Actions = Partial<{
-  [k in keyof typeof symbols]: (x: ParserContext, ps: PStream) => void;
+type MarkdownActions = Partial<{
+  [k in keyof typeof markdownSymbols]: (x: ParserContext, ps: PStream) => void;
 }>;
 
-const actions: Actions = {
+const markdownToHtmlActions: MarkdownActions = {
   START: (x, ps) => {
     return ps.value();
   },
@@ -129,34 +127,38 @@ const actions: Actions = {
 };
 
 const parseMde = (str: string) => {
-  const keys = Object.keys(symbols) as (keyof typeof symbols)[];
+  const keys = Object.keys(markdownSymbols) as (keyof typeof markdownSymbols)[];
   const parsersWithAction = new Map(
     keys.map((name) => [
       name,
-      actions[name]
-        ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          new ParserWithAction(symbols[name], actions[name]!)
-        : symbols[name],
+      markdownToHtmlActions[name]
+        ? new ParserWithAction(
+            markdownSymbols[name],
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            markdownToHtmlActions[name]!
+          )
+        : markdownSymbols[name],
     ])
   );
-
   const ps = new StringPStream({ pos: 0, str, value: null });
   const start = parsersWithAction.get('START');
   const x = new ParserContext();
   x.set('grammarMap', parsersWithAction);
   const result = start?.parse(x, ps);
-  return result?.value();
+  return (result?.value() as string[]).join('');
 };
 
 test('parse stuff', (t) => {
-  t.is('hello', parse(join(until(' ')), 'hello world')?.value());
-  t.deepEqual(
-    ['joe', 'mike'],
-    parse(repeat(alt(['joe', 'mike']), ' '), 'joe mike')?.value()
+  const html = parseMde(
+    `
+Hello **world**. This is *italic*.
+And this is on a new line
+`.trim()
   );
-
-  t.deepEqual(
-    ['<div>Hello <b><i>mike</i></b> yo</div>'],
-    parseMde(`Hello ***mike*** yo`)
+  t.is(
+    `
+<div>Hello <b>world</b>. This is <i>italic</i>.</div><div>And this is on a new line</div>
+`.trim(),
+    html
   );
 });
