@@ -3,14 +3,21 @@ import {
   alt,
   anyChar,
   eof,
+  flat,
+  join,
+  max,
   not,
+  optional,
+  parse,
   plus,
   range,
   repeat,
   seq,
+  seq0,
   seq1,
   sym,
   until,
+  ws,
 } from '..';
 import { ParserContext } from './parser/Parser';
 import { ParserWithAction } from './parser/ParserWithAction';
@@ -161,4 +168,55 @@ And this is on a new line
 `.trim(),
     html
   );
+});
+
+const alpha = alt([range('a', 'z'), range('A', 'Z')]);
+const num = range('0', '9');
+const alphaNum = alt([alpha, num]);
+const domainPart = max(
+  seq([
+    repeat(seq([repeat(alphaNum, undefined, 1), '-'])),
+    repeat(alphaNum, undefined, 1),
+  ]),
+  63
+);
+
+const domain = max(
+  seq([
+    repeat(seq([domainPart, '.']), undefined, 1),
+    repeat(alpha, undefined, 2, 6), // TLD
+  ]),
+  253
+);
+
+const url = join(
+  flat(
+    seq([
+      optional(alt(['http://', 'https://'])),
+      domain,
+      optional(
+        seq([
+          alt(['/', '?', '#']),
+          repeat(not(alt([seq0(['.', ws()]), ws()]), anyChar())),
+        ])
+      ),
+    ]),
+    // Might be better to flat/join each piece but this results in less code.
+    5
+  )
+);
+
+test('parse url', (t) => {
+  const urlOnly = seq1(0, [url, eof()]);
+
+  t.truthy(parse(urlOnly, 'google.com'));
+  t.truthy(parse(urlOnly, 'goo-gle.com'));
+  t.falsy(parse(urlOnly, Array(30).fill('01234566789').join('') + '.com'));
+  t.falsy(parse(urlOnly, Array(30).fill('01234566789').join('.') + '.com'));
+  t.falsy(parse(urlOnly, 'google-.com'));
+  t.falsy(parse(urlOnly, '-google.com'));
+  t.truthy(parse(urlOnly, 'http://chart.apis.google.com/chart'));
+  const longUrl =
+    'http://chart.apis.google.com/chart?chs=500x500&chma=0,0,100,100&cht=p&chco=FF0000%2CFFFF00%7CFF8000%2C00FF00%7C00FF00%2C0000FF&chd=t%3A122%2C42%2C17%2C10%2C8%2C7%2C7%2C7%2C7%2C6%2C6%2C6%2C6%2C5%2C5&chl=122%7C42%7C17%7C10%7C8%7C7%7C7%7C7%7C7%7C6%7C6%7C6%7C6%7C5%7C5&chdl=android%7Cjava%7Cstack-trace%7Cbroadcastreceiver%7Candroid-ndk%7Cuser-agent%7Candroid-webview%7Cwebview%7Cbackground%7Cmultithreading%7Candroid-source%7Csms%7Cadb%7Csollections%7Cactivity|Chart';
+  t.is(parse(urlOnly, longUrl)?.value(), longUrl);
 });

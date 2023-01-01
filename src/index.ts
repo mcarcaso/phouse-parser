@@ -2,9 +2,11 @@ import { Alt } from './lib/parser/Alt';
 import { AnyChar } from './lib/parser/AnyChar';
 import { Chars } from './lib/parser/Chars';
 import { Eof } from './lib/parser/Eof';
+import { Flat } from './lib/parser/Flat';
 import { Join } from './lib/parser/Join';
 import { Literal } from './lib/parser/Literal';
 import { LiteralIgnoreCase } from './lib/parser/LiteralIgnoreCase';
+import { Max } from './lib/parser/Max';
 import { Not } from './lib/parser/Not';
 import { NotChars } from './lib/parser/NotChars';
 import { Optional } from './lib/parser/Optional';
@@ -19,6 +21,7 @@ import { SeqN } from './lib/parser/SeqN';
 import { Substring } from './lib/parser/Substring';
 import { Symbol } from './lib/parser/Symbol';
 import { Until } from './lib/parser/Until';
+import { WhiteSpace } from './lib/parser/WhiteSpace';
 import { StringPStream } from './lib/pstream/StringPStream';
 
 type ParserIsh = Parser | string;
@@ -62,6 +65,10 @@ export const literalIc = (str: string, value?: unknown) =>
   new LiteralIgnoreCase({ str, value });
 export const eof = () => new Eof();
 export const anyChar = () => new AnyChar();
+export const max = (p: ParserIsh, max: number) => new Max(max, toParser(p));
+export const ws = () => new WhiteSpace();
+export const flat = (p: ParserIsh, depth?: number) =>
+  new Flat(toParser(p), depth);
 
 export const parse = (p: ParserIsh, str: string, x?: ParserContext) => {
   return toParser(p).parse(
@@ -77,6 +84,7 @@ export * from './lib/parser/Eof';
 export * from './lib/parser/Join';
 export * from './lib/parser/Literal';
 export * from './lib/parser/LiteralIgnoreCase';
+export * from './lib/parser/Max';
 export * from './lib/parser/Not';
 export * from './lib/parser/NotChars';
 export * from './lib/parser/Optional';

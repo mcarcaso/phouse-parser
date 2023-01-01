@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "incremental": true,
-    "target": "es2017",
+    "target": "es2019",
     "outDir": "build/main",
     "rootDir": "src",
     "moduleResolution": "node",
@@ -18,7 +18,8 @@
     "listFiles": false /* Print names of files part of the compilation. */,
     "pretty": true /* Stylize errors and messages using color and context. */,
     "lib": [
-      "es2017"
+      "es2019",
+      "dom"
     ],
     "types": [],
     "typeRoots": [
