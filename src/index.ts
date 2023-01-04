@@ -24,8 +24,8 @@ import { Until } from './lib/parser/Until';
 import { WhiteSpace } from './lib/parser/WhiteSpace';
 import { StringPStream } from './lib/pstream/StringPStream';
 
-type ParserIsh = Parser | string;
-const toParser = (p: ParserIsh) =>
+export type ParserIsh = Parser | string;
+export const toParser = (p: ParserIsh) =>
   typeof p === 'string' ? new Literal({ str: p }) : p;
 
 export const seq = (parsers: ParserIsh[]) => new Seq(parsers.map(toParser));
