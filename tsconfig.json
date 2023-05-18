@@ -7,7 +7,6 @@
     "moduleResolution": "node",
     "module": "commonjs",
     "declaration": true,
-    "inlineSourceMap": true,
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
     "resolveJsonModule": true /* Include modules imported with .json extension. */,
     "strict": true /* Enable all strict type-checking options. */,
@@ -17,21 +16,11 @@
     "listEmittedFiles": false /* Print names of generated files part of the compilation. */,
     "listFiles": false /* Print names of files part of the compilation. */,
     "pretty": true /* Stylize errors and messages using color and context. */,
-    "lib": [
-      "es2019",
-      "dom"
-    ],
+    "lib": ["es2019", "dom"],
     "types": [],
-    "typeRoots": [
-      "node_modules/@types",
-      "src/types"
-    ]
+    "typeRoots": ["node_modules/@types", "src/types"]
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules/**"
-  ],
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules/**"],
   "compileOnSave": false
 }
