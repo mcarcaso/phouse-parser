@@ -1,6 +1,6 @@
 {
   "name": "phouse-parser",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Based on https://github.com/foam-framework/foam/blob/master/core/parse.js",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
@@ -94,5 +94,6 @@
     "exclude": [
       "**/*.spec.js"
     ]
-  }
+  },
+  "sourceMaps": true
 }
